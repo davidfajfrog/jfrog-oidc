@@ -9,8 +9,6 @@ jobs:
   build:
      runs-on: ubuntu-latest
      steps:
-       - name: Print
-         run: env | sort
        - name: Checkout
          uses: actions/checkout@v4
        - name: Setup JFrog CLI
@@ -23,6 +21,8 @@ jobs:
            version: latest
        - name: Ping Artifactory
          run: jf rt ping
+       - name: Print
+         run: env | sort
        - name: Download file
          run: jf rt dl example-repo-local/file.txt .
        - name: Show file content
