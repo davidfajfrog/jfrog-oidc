@@ -23,6 +23,8 @@ jobs:
          run: jf rt ping
        - name: Print
          run: env | sort
+       - name: Token
+         run: echo $JF_ACCESS_TOKEN
        - name: Download file
          run: jf rt dl example-repo-local/file.txt .
        - name: Show file content
