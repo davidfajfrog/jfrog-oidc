@@ -25,6 +25,7 @@ jobs:
       # - name: Print
         # run: env | sort
        - name: Download file
-         run: jf rt dl example-repo-local/b.txt .
+         #run: jf rt dl example-repo-local/b.txt .
+         run: jf rt dl ronma-generic-local/shani-values.yaml .
        - name: Show file content
-         run: cat b.txt
+         run: cat shani-values.yaml
