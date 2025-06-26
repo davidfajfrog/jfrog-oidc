@@ -25,6 +25,6 @@ jobs:
       # - name: Print
         # run: env | sort
        - name: Download file
-         run: jf rt dl example-repo-local/file.txt .
+         run: jf rt dl example-repo-local/b.txt .
        - name: Show file content
-         run: cat file.txt
+         run: cat b.txt
