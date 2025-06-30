@@ -53,8 +53,8 @@ jobs:
           cat <<EOF > buildinfo.json
           {
             "buildInfo": {
-              "name": "${BUILD_NAME}",
-              "number": "${BUILD_NUMBER}",
+              "name": "davidfa-oidc-old",
+              "number": "1",
               "started": "${STARTED}",
               "agent": {
                 "name": "GitHub Actions",
