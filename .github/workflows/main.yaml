@@ -93,5 +93,5 @@ jobs:
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $ACCESS_TOKEN" \
             -d @buildinfo.json \
-            "$JFROG_PLATFORM_URL/artifactory/api/build"
+            "$JFROG_PLATFORM_URL/artifactory/api/build?project=pr2"
 
