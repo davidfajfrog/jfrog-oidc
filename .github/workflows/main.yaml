@@ -56,7 +56,6 @@ jobs:
 
           cat > buildinfo.json <<EOF
           {
-           "buildInfo": {
            "version" : "1.0.1",
            "name": "${BUILD_NAME}",
            "number": "${BUILD_NUMBER}",
@@ -78,7 +77,6 @@ jobs:
           ]
           }
           ]
-          }
           }
           EOF
 
