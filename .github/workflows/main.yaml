@@ -50,32 +50,37 @@ jobs:
           MD5=$(md5sum "$ARTIFACT_NAME" | awk '{ print $1 }')
           STARTED=$(date -u +"%Y-%m-%dT%H:%M:%S.000+0000")
 
-          cat <<EOF > buildinfo.json
+          echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+          echo "STARTED=$STARTED" >> $GITHUB_ENV
+
+          cat > buildinfo.json <<EOF
           {
-            "buildInfo": {
-              "name": "davidfa-oidc-old",
-              "number": "1",
-              "started": "${STARTED}",
-              "agent": {
-                "name": "GitHub Actions",
-                "version": "1.0"
-              },
-              "modules": [
-                {
-                  "id": "oidc-module",
-                  "artifacts": [
-                    {
-                      "type": "file",
-                      "sha1": "${SHA1}",
-                      "md5": "${MD5}",
-                      "name": "${ARTIFACT_NAME}"
-                    }
-                  ]
-                }
-              ]
-            }
+           "buildInfo": {
+           "name": "${BUILD_NAME}",
+           "number": "${BUILD_NUMBER}",
+           "started": "${STARTED}",
+           "agent": {
+           "name": "GitHub Actions",
+           "version": "1.0"
+           },
+           "modules": [
+           {
+           "id": "oidc-module",
+           "artifacts": [
+            {
+            "type": "file",
+            "sha1": "${SHA1}",
+            "md5": "${MD5}",
+            "name": "${ARTIFACT_NAME}"
+          }
+          ]
+          }
+          ]
+          }
           }
           EOF
+
 
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
