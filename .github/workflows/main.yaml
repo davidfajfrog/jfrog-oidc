@@ -40,3 +40,54 @@ jobs:
           JFROG_PLATFORM_URL: https://elinaf.jfrog.io
         run: |
           curl -H "Authorization: Bearer $ACCESS_TOKEN" -T oidc-poc "${JFROG_PLATFORM_URL}/artifactory/ronma-generic-local/oidc-poc"
+
+      - name: Generate build-info JSON
+        run: |
+          BUILD_NAME="oidc-poc-build"
+          BUILD_NUMBER=$(date +%Y%m%d%H%M%S)
+          ARTIFACT_NAME="oidc-poc"
+          SHA1=$(sha1sum "$ARTIFACT_NAME" | awk '{ print $1 }')
+          MD5=$(md5sum "$ARTIFACT_NAME" | awk '{ print $1 }')
+          STARTED=$(date -u +"%Y-%m-%dT%H:%M:%S.000+0000")
+
+          cat <<EOF > buildinfo.json
+          {
+            "buildInfo": {
+              "name": "${BUILD_NAME}",
+              "number": "${BUILD_NUMBER}",
+              "started": "${STARTED}",
+              "agent": {
+                "name": "GitHub Actions",
+                "version": "1.0"
+              },
+              "modules": [
+                {
+                  "id": "oidc-module",
+                  "artifacts": [
+                    {
+                      "type": "file",
+                      "sha1": "${SHA1}",
+                      "md5": "${MD5}",
+                      "name": "${ARTIFACT_NAME}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          EOF
+
+          echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+
+      - name: Publish build-info to Artifactory
+        env:
+          ACCESS_TOKEN: ${{ env.ACCESS_TOKEN }}
+          JFROG_PLATFORM_URL: https://elinaf.jfrog.io
+        run: |
+          curl -X PUT \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $ACCESS_TOKEN" \
+            -d @buildinfo.json \
+            "$JFROG_PLATFORM_URL/artifactory/api/build"
+
