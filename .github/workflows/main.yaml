@@ -29,10 +29,14 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: Create test file
+        run: |
+           echo "ceci est un test" > oidc-poc
 
       - name: Deploy to Artifactory
         env:
           ACCESS_TOKEN: ${{ env.ACCESS_TOKEN }}
           JFROG_PLATFORM_URL: https://elinaf.jfrog.io
         run: |
-          curl -H "Authorization: Bearer $ACCESS_TOKEN" -T oidc-poc "${JFROG_PLATFORM_URL}/artifactory/ronma-generic-local/oidc-poc-$(date +%Y%m%d%H%M%S)"
+          curl -H "Authorization: Bearer $ACCESS_TOKEN" -T oidc-poc "${JFROG_PLATFORM_URL}/artifactory/ronma-generic-local/oidc-poc"
