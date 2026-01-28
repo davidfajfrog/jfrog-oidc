@@ -17,6 +17,7 @@ jobs:
          env:  
            JF_URL: ${{ secrets.JF_URL }}
          with:
+           download-repository: jfrog-cli-remote
            oidc-provider-name: 'davidfa-github'
            oidc-audience: 'support'
            version: latest
