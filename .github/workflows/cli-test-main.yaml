@@ -23,10 +23,21 @@ jobs:
            version: latest
        - name: Ping Artifactory
          run: jf rt ping
-      # - name: Print
-        # run: env | sort
+       - name: Print
+         run: env | sort
+       - name: Verify Issuer
+         run: |
+          # 1. Get the token
+          ID_TOKEN=$(curl -sLS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=google-cloud-auth" | jq -r '.value')
+          
+          # 2. Extract the 'iss' claim from the JWT payload
+          # Note: We use 'tr -d '\n'' to ensure the base64 string is clean
+          ISSUER=$(echo $ID_TOKEN | cut -d'.' -f2 | base64 -d 2>/dev/null | jq -r '.iss')
+          
+          echo "Request URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
+          echo "Actual Issuer in Token: $ISSUER"
        - name: Download file
-         #run: jf rt dl example-repo-local/b.txt .
-         run: jf rt dl ronma-generic-local/shani-values.yaml .
+         run: jf rt dl example-repo-local/b.txt .
+         #run: jf rt dl ronma-generic-local/shani-values.yaml .
        - name: Show file content
-         run: cat shani-values.yaml
+         run: cat b.txt
